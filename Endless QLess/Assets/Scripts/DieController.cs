@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,7 +11,7 @@ public class DieController : MonoBehaviour
     public UnityEvent<DieMovedEvent> OnMove;
     private Vector2Int _position;
     private Vector3 _startPosition;
-    public char Face 
+    public char Face
     {
         get => Label.text[0];
         set
@@ -31,9 +32,15 @@ public class DieController : MonoBehaviour
     {
         Vector2Int newPosition = Vector2Int.RoundToInt(transform.position);
         if (newPosition == _position) { return; }
-        DieMovedEvent movedEvent = new (this, _position, newPosition);
+        DieMovedEvent movedEvent = new(this, _position, newPosition);
         _position = newPosition;
         OnMove.Invoke(movedEvent);
+    }
+
+    internal void MoveTo(Vector2Int position)
+    {
+        _position = position;
+        transform.position = (Vector2)position;
     }
 
     void Start()

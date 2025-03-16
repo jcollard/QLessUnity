@@ -26,6 +26,11 @@ public class GameManager : MonoBehaviour
 
     private void OnDieMoved(DieMovedEvent @event)
     {
+        if(_boardData.ContainsKey(@event.To))
+        {
+            @event.Die.MoveTo(@event.From);
+            return;
+        }
         _boardData.Remove(@event.From);
         _boardData[@event.To] = @event.Die;
         ValidateBoard();
