@@ -1,17 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class Draggable : MonoBehaviour
 {
-    private float _startX;
 
     public Vector2 MousePosition => Camera.main.ScreenToWorldPoint(Input.mousePosition);
     public Vector2 Offset;
-
-    void Start()
-    {
-        // Snap();
-    }
+    public UnityEvent OnSnap;
 
     void OnMouseDown()
     {
@@ -30,6 +25,7 @@ public class Draggable : MonoBehaviour
         position.x = Mathf.Round(position.x);
         position.y = Mathf.Round(position.y);
         transform.position = position;
+        OnSnap.Invoke();
     }
 
     void OnMouseUp() => Snap();

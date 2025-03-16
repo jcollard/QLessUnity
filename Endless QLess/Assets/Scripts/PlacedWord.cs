@@ -1,0 +1,1 @@
+public record struct PlacedWord(string Word, DieController[] Dice, bool IsValid);

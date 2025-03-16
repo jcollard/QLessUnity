@@ -33,7 +33,5 @@ public class Snapable : MonoBehaviour
             IsConnected = false;
             otherSnap.IsConnected = false;
         }
-        
     }
-   
 }

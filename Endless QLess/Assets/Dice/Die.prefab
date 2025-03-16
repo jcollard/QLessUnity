@@ -141,6 +141,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Offset: {x: 0, y: 0}
+  OnSnap:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8304733730402151516}
+        m_TargetAssemblyTypeName: DieController, Assembly-CSharp
+        m_MethodName: UpdatePosition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &2824317322422064792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -201,6 +216,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Label: {fileID: 3473586476465645143}
   Border: {fileID: 1650966964765824262}
+  SquareRenderer: {fileID: 4165032435964082456}
+  OnMove:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1514547752074570006
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,8 +437,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

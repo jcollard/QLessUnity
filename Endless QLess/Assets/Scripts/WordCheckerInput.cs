@@ -16,8 +16,9 @@ public class WordCheckerInput : MonoBehaviour
     {
         _validWords = new HashSet<string>();
         _validWords = Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim().ToLower()).ToHashSet();
-        
     }
+
+    public bool IsValid(string value) => value.Length > 2 && _validWords.Contains(value.ToLower());
 
     public void Validate(string value)
     {
@@ -26,7 +27,6 @@ public class WordCheckerInput : MonoBehaviour
             "" => Color.white,
             _ when _validWords.Contains(word) => Valid,
             _ => Invalid
-
         };
         Background.color = color;
     }
