@@ -12,6 +12,7 @@ public class WordCheckerInput : MonoBehaviour
     public Color Invalid = Color.red;
     public TextAsset Dictionary;
     private Dictionary<string, string> _validWords;
+    public TMP_InputField InputField;
     public TextMeshProUGUI DefinitionText;
 
     void Awake()
@@ -43,6 +44,16 @@ public class WordCheckerInput : MonoBehaviour
         {
             Background.color = Invalid;
             DefinitionText.text = string.Empty;
+        }
+    }
+
+    internal void ShowDefinition(PlacedWord placedWord)
+    {
+        if (_validWords.TryGetValue(placedWord.Word.Trim().ToLower(), out string definition))
+        {
+            InputField.text = placedWord.Word.ToLower();
+            Background.color = Valid;
+            DefinitionText.text = definition;
         }
     }
 }

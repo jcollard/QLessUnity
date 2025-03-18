@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -28,12 +27,12 @@ public class GameManager : MonoBehaviour
     {
         if(_boardData.ContainsKey(@event.To))
         {
-            @event.Die.MoveTo(@event.From);
+            @event.Die.CancelMove();
             return;
         }
         _boardData.Remove(@event.From);
         _boardData[@event.To] = @event.Die;
-        ValidateBoard();
+        ValidateBoard(@event.Die);
     }
 
     public readonly Vector2Int UpDelta = new(0, 1);
@@ -42,11 +41,25 @@ public class GameManager : MonoBehaviour
     public readonly Vector2Int RightDelta = new(1, 0);
     private readonly HashSet<DieController> _validLetters = new();
     private readonly HashSet<DieController> _invalidLetters = new();
+    private HashSet<PlacedWord> _placedWords = new();
+
+    private PlacedWord ValidateBoard(DieController lastPlaced)
+    {
+        ValidateBoard();
+        if(_validLetters.Contains(lastPlaced))
+        {
+            // FindWord(lastPlaced.)
+        }
+        return default;
+
+    }
 
     private void ValidateBoard()
     {
         _validLetters.Clear();
         _invalidLetters.Clear();
+        HashSet<PlacedWord> previousWords = _placedWords.ToHashSet();
+        _placedWords.Clear();
         foreach ((Vector2Int position, DieController die) in _boardData)
         {
             if (!_boardData.ContainsKey(position + LeftDelta) && _boardData.ContainsKey(position + RightDelta))
@@ -54,13 +67,23 @@ public class GameManager : MonoBehaviour
                 var word = FindWord(position, RightDelta);
                 if (word.IsValid) { _validLetters.UnionWith(word.Dice); }
                 else { _invalidLetters.UnionWith(word.Dice); }
+                _placedWords.Add(word);
             }
             if (!_boardData.ContainsKey(position + UpDelta) && _boardData.ContainsKey(position + DownDelta))
             {
                 var word = FindWord(position, DownDelta);
                 if (word.IsValid) { _validLetters.UnionWith(word.Dice); }
                 else { _invalidLetters.UnionWith(word.Dice); }
+                _placedWords.Add(word);
             }
+        }
+
+        IEnumerable<PlacedWord> newWords = _placedWords.Where(w => !previousWords.Contains(w) && w.IsValid);
+        Debug.Log(newWords.Count());
+        if (newWords.Any())
+        {
+            
+            WordChecker.ShowDefinition(newWords.First());
         }
 
         foreach (DieController die in _boardData.Values)

@@ -9,6 +9,7 @@ public class DieController : MonoBehaviour
     public SpriteRenderer Border;
     public SpriteRenderer SquareRenderer;
     public UnityEvent<DieMovedEvent> OnMove;
+    private Vector2Int _lastPosition;
     private Vector2Int _position;
     private Vector3 _startPosition;
     public char Face
@@ -17,7 +18,7 @@ public class DieController : MonoBehaviour
         set
         {
             Label.text = value.ToString().ToUpper();
-            transform.position = _startPosition;
+            _position = Vector2Int.RoundToInt(_startPosition);
             UpdatePosition();
         }
     }
@@ -32,15 +33,16 @@ public class DieController : MonoBehaviour
     {
         Vector2Int newPosition = Vector2Int.RoundToInt(transform.position);
         if (newPosition == _position) { return; }
+        _lastPosition = _position;
         DieMovedEvent movedEvent = new(this, _position, newPosition);
         _position = newPosition;
         OnMove.Invoke(movedEvent);
     }
 
-    internal void MoveTo(Vector2Int position)
+    public void CancelMove()
     {
-        _position = position;
-        transform.position = (Vector2)position;
+        _position = _lastPosition;
+        transform.position = (Vector2)_position;
     }
 
     void Awake()
