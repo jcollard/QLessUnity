@@ -43,7 +43,7 @@ public class DieController : MonoBehaviour
         transform.position = (Vector2)position;
     }
 
-    void Start()
+    void Awake()
     {
         _startPosition = transform.position;
     }
