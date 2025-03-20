@@ -120,6 +120,8 @@ public class GameManager : MonoBehaviour
         {
             die.Face = DicePool.Next();
         }
+        _boardData.Clear();
+        ValidateBoard();
     }
 
     void Start()
