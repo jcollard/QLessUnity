@@ -8,7 +8,7 @@ public class DicePoolData : ScriptableObject
     private int _ix = 0;
 
     public char Next()
-    {
+    {        
         _ix %= Faces.Length;
         char ch = Faces[_ix][Random.Range(0, Faces[_ix].Length)];
         _ix++;

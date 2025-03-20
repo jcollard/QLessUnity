@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private readonly Dictionary<Vector2Int, DieController> _boardData = new();
+    [SerializeField] private TMP_InputField _seedInput;
     public WordCheckerInput WordChecker;
     public DieController[] Dice;
     public DicePoolData DicePool;
@@ -116,6 +118,26 @@ public class GameManager : MonoBehaviour
 
     public void Roll()
     {
+        System.Random rng = new System.Random();
+        _builder.Clear();
+        for (int i = 0; i < 16; i++)
+        {
+            if (i > 0 && i % 4 == 0) { _builder.Append('-'); }
+            _builder.Append((char)('A' + rng.Next(26)));
+        }
+        _seedInput.text = _builder.ToString();
+        Roll(_seedInput.text);
+    }
+
+    public void RollSeed()
+    {
+        Roll(_seedInput.text);
+    }
+
+    public void Roll(string seed)
+    {
+        _seedInput.text = seed.ToString();
+        UnityEngine.Random.InitState(seed.GetHashCode());
         foreach (DieController die in Dice)
         {
             die.Face = DicePool.Next();
