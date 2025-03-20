@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDieMoved(DieMovedEvent @event)
     {
-        if(_boardData.ContainsKey(@event.To))
+        if (_boardData.ContainsKey(@event.To))
         {
             @event.Die.CancelMove();
             return;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private PlacedWord ValidateBoard(DieController lastPlaced)
     {
         ValidateBoard();
-        if(_validLetters.Contains(lastPlaced))
+        if (_validLetters.Contains(lastPlaced))
         {
             // FindWord(lastPlaced.)
         }
@@ -79,10 +79,8 @@ public class GameManager : MonoBehaviour
         }
 
         IEnumerable<PlacedWord> newWords = _placedWords.Where(w => !previousWords.Contains(w) && w.IsValid);
-        Debug.Log(newWords.Count());
         if (newWords.Any())
         {
-            
             WordChecker.ShowDefinition(newWords.First());
         }
 
@@ -96,7 +94,7 @@ public class GameManager : MonoBehaviour
                 _ => UnusedLetter,
             };
         }
-        
+
     }
 
     private readonly StringBuilder _builder = new();
@@ -113,7 +111,7 @@ public class GameManager : MonoBehaviour
             position += delta;
         }
         string word = _builder.ToString();
-        return new PlacedWord(word, dice.ToArray(), WordChecker.IsValid(word));
+        return new PlacedWord(word, start, delta, dice.ToArray(), WordChecker.IsValid(word));
     }
 
     public void Roll()
