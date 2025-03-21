@@ -25,6 +25,14 @@ public class GameManager : MonoBehaviour
     public Color InvalidLetter = Color.red;
     public Color WarningColor = Color.yellow;
     public readonly List<string> _possibleWords = new();
+    public readonly Vector2Int UpDelta = new(0, 1);
+    public readonly Vector2Int DownDelta = new(0, -1);
+    public readonly Vector2Int LeftDelta = new(-1, 0);
+    public readonly Vector2Int RightDelta = new(1, 0);
+    private readonly HashSet<DieController> _validLetters = new();
+    private readonly HashSet<DieController> _invalidLetters = new();
+    private HashSet<PlacedWord> _placedWords = new();
+
 #if UNITY_WEBGL && !UNITY_EDITOR
     //
     // WebGL
@@ -87,15 +95,6 @@ public class GameManager : MonoBehaviour
         _boardData[@event.To] = @event.Die;
         ValidateBoard();
     }
-
-    public readonly Vector2Int UpDelta = new(0, 1);
-    public readonly Vector2Int DownDelta = new(0, -1);
-    public readonly Vector2Int LeftDelta = new(-1, 0);
-    public readonly Vector2Int RightDelta = new(1, 0);
-    private readonly HashSet<DieController> _validLetters = new();
-    private readonly HashSet<DieController> _invalidLetters = new();
-    private HashSet<PlacedWord> _placedWords = new();
-
 
     private void ValidateBoard()
     {
@@ -175,10 +174,7 @@ public class GameManager : MonoBehaviour
         // Debug.Log($"{_possibleWords.Count} words: {string.Join(", ", _possibleWords)}");
     }
 
-    public void RollSeed()
-    {
-        Roll(_seedInput.text);
-    }
+    public void RollSeed() => Roll(_seedInput.text);
 
     private void SetDiceTo(string values)
     {
@@ -218,7 +214,6 @@ public class GameManager : MonoBehaviour
         {
             Roll();
         }
-
     }
 
     [SerializeField]
