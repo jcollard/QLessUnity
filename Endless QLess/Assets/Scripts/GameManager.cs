@@ -47,16 +47,16 @@ public class GameManager : MonoBehaviour
         SetSeedParam(seed);
     }
 #else
-    public bool LoadSeed()  => false;
+    public bool LoadSeed() => false;
     public void SetSeed() { }
 #endif 
 
     public void UpdateSeed(string seed)
     {
-        if (seed == null || seed.Trim() == string.Empty) 
-        { 
+        if (seed == null || seed.Trim() == string.Empty)
+        {
             Roll();
-            return; 
+            return;
         }
         Roll(seed);
     }
@@ -180,14 +180,30 @@ public class GameManager : MonoBehaviour
         Roll(_seedInput.text);
     }
 
+    private void SetDiceTo(string values)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
+            Dice[i].Face = values[i];
+            Dice[i].Color = UnusedLetter;
+        }
+    }
+
     public void Roll(string seed)
     {
         _seedInput.text = seed.ToString();
-        UnityEngine.Random.InitState(seed.GetHashCode());
-        foreach (DieController die in Dice)
+        if (seed.Length == 12 && seed.Where(char.IsLetter).Count() == 12)
         {
-            die.Face = DicePool.Next();
-            die.Color = UnusedLetter;
+            SetDiceTo(seed);
+        }
+        else
+        {
+            UnityEngine.Random.InitState(seed.GetHashCode());
+            foreach (DieController die in Dice)
+            {
+                die.Face = DicePool.Next();
+                die.Color = UnusedLetter;
+            }
         }
         _boardData.Clear();
         ValidateBoard();
@@ -202,7 +218,7 @@ public class GameManager : MonoBehaviour
         {
             Roll();
         }
-        
+
     }
 
     [SerializeField]
