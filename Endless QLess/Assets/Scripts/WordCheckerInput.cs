@@ -51,6 +51,8 @@ public class WordCheckerInput : MonoBehaviour
         }
     }
 
+    public string GetDefinition(string word) => _validWords[word.Trim().ToLower()];
+
     internal void ShowDefinition(PlacedWord placedWord)
     {
         if (_validWords.TryGetValue(placedWord.Word.Trim().ToLower(), out string definition))

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     private readonly Dictionary<Vector2Int, DieController> _boardData = new();
     [SerializeField] private TMP_InputField _seedInput;
+    [SerializeField] private TextMeshProUGUI _definition;
     public WordCheckerInput WordChecker;
     public DieController[] Dice;
     public DicePoolData DicePool;
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
         if (newWords.Any())
         {
             WordChecker.ShowDefinition(newWords.First());
+            _definition.text = WordChecker.GetDefinition(newWords.First().Word);
         }
 
         foreach (DieController die in _boardData.Values)
@@ -139,6 +141,7 @@ public class GameManager : MonoBehaviour
         }
         _boardData.Clear();
         ValidateBoard();
+        _definition.text = string.Empty;
     }
 
     void Start()
