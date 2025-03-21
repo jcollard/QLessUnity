@@ -1,9 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+
+
+#if UNITY_WEBGL
+#pragma warning disable IDE0005 // Using directive is unnecessary.
+using System.Runtime.InteropServices;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
+#endif
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +25,42 @@ public class GameManager : MonoBehaviour
     public Color InvalidLetter = Color.red;
     public Color WarningColor = Color.yellow;
     public readonly List<string> _possibleWords = new();
+#if UNITY_WEBGL && !UNITY_EDITOR
+    //
+    // WebGL
+    //
+    [DllImport("__Internal")]
+    //(gameObject, callbackMethod)
+    private static extern void GetSeedParam(string gameObjectName, string methodName);
+    [DllImport("__Internal")]
+    private static extern void SetSeedParam(string seed);
+
+    // Broser plugin should be called in OnPointerDown.
+    public bool LoadSeed() {
+        GetSeedParam(gameObject.name, nameof(UpdateSeed));
+        return true;
+    }
+
+    // Called from browser
+    public void SetSeed() {
+        string seed = _seedInput.text;
+        SetSeedParam(seed);
+    }
+#else
+    public bool LoadSeed()  => false;
+    public void SetSeed() { }
+#endif 
+
+    public void UpdateSeed(string seed)
+    {
+        if (seed == null || seed.Trim() == string.Empty) 
+        { 
+            Roll();
+            return; 
+        }
+        Roll(seed);
+    }
+
     public void FindAllDieControllers()
     {
         Dice = FindObjectsByType<DieController>(FindObjectsSortMode.InstanceID);
@@ -150,12 +192,17 @@ public class GameManager : MonoBehaviour
         _boardData.Clear();
         ValidateBoard();
         _definition.text = string.Empty;
+        SetSeed();
     }
 
     void Start()
     {
         FindAllDieControllers();
-        Roll();
+        if (!LoadSeed())
+        {
+            Roll();
+        }
+        
     }
 
     [SerializeField]
@@ -164,7 +211,6 @@ public class GameManager : MonoBehaviour
     public void FindLetters(string input)
     {
         input = input.Trim().ToLower();
-        Debug.Log(input);
         var nextWords = WordChecker.Trie.NextWords(input);
         if (!nextWords.Any())
         {
