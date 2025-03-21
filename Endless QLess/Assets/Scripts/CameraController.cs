@@ -7,11 +7,15 @@ public class CameraController : MonoBehaviour
     private float _aspect;
     public bool CancelDrag = false;
     private Vector3 _offSet;
+    private Vector3 _startPosition;
 
     void Start()
     {
         UpdateAspect();
+        _startPosition = transform.position;
     }
+
+    public void Reset() => transform.position = _startPosition;
 
     public void UpdateAspect()
     {
