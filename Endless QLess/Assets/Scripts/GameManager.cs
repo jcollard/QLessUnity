@@ -135,6 +135,7 @@ public class GameManager : MonoBehaviour
         foreach (DieController die in Dice)
         {
             die.Face = DicePool.Next();
+            die.Color = UnusedLetter;
         }
         _boardData.Clear();
         ValidateBoard();
