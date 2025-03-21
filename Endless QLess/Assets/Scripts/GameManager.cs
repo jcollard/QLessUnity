@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private CameraController _cameraController;
     private readonly Dictionary<Vector2Int, DieController> _boardData = new();
     [SerializeField] private TMP_InputField _seedInput;
     [SerializeField] private TextMeshProUGUI _definition;
@@ -24,8 +25,14 @@ public class GameManager : MonoBehaviour
         foreach (DieController die in Dice)
         {
             die.OnMove.AddListener(OnDieMoved);
+            Draggable draggable = die.GetComponent<Draggable>();
+            draggable.OnDragStarted.AddListener(DisableCameraDrag);
+            draggable.OnSnap.AddListener(EnableCameraDrag);
         }
     }
+
+    private void DisableCameraDrag() => _cameraController.CancelDrag = true;
+    private void EnableCameraDrag() => _cameraController.CancelDrag = false;
 
     private void OnDieMoved(DieMovedEvent @event)
     {
