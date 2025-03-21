@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public Color ValidLetter = Color.white;
     public Color InvalidLetter = Color.red;
     public Color WarningColor = Color.yellow;
+    public readonly List<string> _possibleWords = new();
     public void FindAllDieControllers()
     {
         Dice = FindObjectsByType<DieController>(FindObjectsSortMode.InstanceID);
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
         }
         _boardData.Remove(@event.From);
         _boardData[@event.To] = @event.Die;
-        ValidateBoard(@event.Die);
+        ValidateBoard();
     }
 
     public readonly Vector2Int UpDelta = new(0, 1);
@@ -45,16 +46,6 @@ public class GameManager : MonoBehaviour
     private readonly HashSet<DieController> _invalidLetters = new();
     private HashSet<PlacedWord> _placedWords = new();
 
-    private PlacedWord ValidateBoard(DieController lastPlaced)
-    {
-        ValidateBoard();
-        if (_validLetters.Contains(lastPlaced))
-        {
-            // FindWord(lastPlaced.)
-        }
-        return default;
-
-    }
 
     private void ValidateBoard()
     {
@@ -127,6 +118,9 @@ public class GameManager : MonoBehaviour
         }
         _seedInput.text = _builder.ToString();
         Roll(_seedInput.text);
+        _possibleWords.Clear();
+        _possibleWords.AddRange(WordChecker.Trie.FindWords(Dice.Select(d => d.Face)).OrderByDescending(s => s.Length));
+        Debug.Log($"{_possibleWords.Count} words: {string.Join(", ", _possibleWords)}");
     }
 
     public void RollSeed()
@@ -150,5 +144,23 @@ public class GameManager : MonoBehaviour
     {
         FindAllDieControllers();
         Roll();
+    }
+
+    [SerializeField]
+    private TMP_InputField _trieLetters;
+
+    public void FindLetters(string input)
+    {
+        input = input.Trim().ToLower();
+        Debug.Log(input);
+        var nextWords = WordChecker.Trie.NextWords(input);
+        if (!nextWords.Any())
+        {
+            Debug.Log("No words");
+        }
+        else
+        {
+            Debug.Log(string.Join(", ", nextWords));
+        }
     }
 }

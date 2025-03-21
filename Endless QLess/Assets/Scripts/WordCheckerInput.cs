@@ -14,13 +14,17 @@ public class WordCheckerInput : MonoBehaviour
     private Dictionary<string, string> _validWords;
     public TMP_InputField InputField;
     public TextMeshProUGUI DefinitionText;
+    public Trie Trie { get; private set; } = new(string.Empty);
 
     void Awake()
     {
         _validWords = new Dictionary<string, string>();
         foreach (string row in Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
         {
-            _validWords[row.Split(new char[0])[0].Trim().ToLower()] = row;
+            string word = row.Split(new char[0])[0].Trim().ToLower();
+            if (word.Length < 3) { continue; }
+            _validWords[word] = row;
+            Trie.AddWord(word);
         }
     }
 
