@@ -24,7 +24,7 @@ public class WordCheckerInput : MonoBehaviour
             string word = row.Split(new char[0])[0].Trim().ToLower();
             if (word.Length < 3) { continue; }
             _validWords[word] = row;
-            Trie.AddWord(word);
+            // Trie.AddWord(word);
         }
     }
 
