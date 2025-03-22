@@ -1917,8 +1917,10 @@ MonoBehaviour:
   Dictionary: {fileID: 4900000, guid: 2c5237fac1e9a45ca96ba4aad206330a, type: 3}
   InputField: {fileID: 1020143102}
   DefinitionText: {fileID: 348414917}
-  _loadingText: {fileID: 912273313}
+  _loadingText: {fileID: 6231525430956360495}
+  _percentageText: {fileID: 912273313}
   _loadingPanel: {fileID: 651333495}
+  _loadsPerFrame: 20000
 --- !u!1001 &1085845558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2932,7 +2934,9 @@ MonoBehaviour:
   InputField: {fileID: 1686520614}
   DefinitionText: {fileID: 348414917}
   _loadingText: {fileID: 0}
+  _percentageText: {fileID: 0}
   _loadingPanel: {fileID: 0}
+  _loadsPerFrame: 10000
 --- !u!114 &1686520614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3935,11 +3939,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 59306063490435267, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 59306063490435267, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_fontSizeMin
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 59306063490435267, guid: c5dc638431269e84480009fbde893732, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 59306063490435267, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_enableAutoSizing
@@ -3972,6 +3980,10 @@ PrefabInstance:
     - target: {fileID: 1783964939960339131, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130346674308858117, guid: c5dc638431269e84480009fbde893732, type: 3}
+      propertyPath: m_Name
+      value: Loading Info Text (TMP)
       objectReference: {fileID: 0}
     - target: {fileID: 3302045861410879591, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_Enabled
@@ -4011,27 +4023,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 280
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 35.76
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3584417725642232348, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -77.78001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5382762914942269020, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4067,27 +4079,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 280
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 35.76
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6612173426472230841, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -32.020004
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6681452310364964020, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_Enabled
@@ -4095,7 +4107,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7687630064497493350, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_fontSize
-      value: 32
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687630064497493350, guid: c5dc638431269e84480009fbde893732, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 7687630064497493350, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_enableAutoSizing
@@ -4185,6 +4201,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8641778075387694240, guid: c5dc638431269e84480009fbde893732, type: 3}
+      propertyPath: m_Name
+      value: Percentage Text (TMP)
+      objectReference: {fileID: 0}
     - target: {fileID: 8704559045008137927, guid: c5dc638431269e84480009fbde893732, type: 3}
       propertyPath: m_ChildAlignment
       value: 4
@@ -4268,6 +4288,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: af1d376e19147490dbe97a68fe7b58ff, type: 3}
+--- !u!114 &6231525430956360495 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 59306063490435267, guid: c5dc638431269e84480009fbde893732, type: 3}
+  m_PrefabInstance: {fileID: 3046679681332940518}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

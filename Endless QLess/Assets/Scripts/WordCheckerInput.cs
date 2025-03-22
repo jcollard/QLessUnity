@@ -17,7 +17,11 @@ public class WordCheckerInput : MonoBehaviour
     public TextMeshProUGUI DefinitionText;
     public Trie Trie { get; private set; } = new(string.Empty);
     [SerializeField] private TextMeshProUGUI _loadingText;
+    [SerializeField] private TextMeshProUGUI _percentageText;
     [SerializeField] private GameObject _loadingPanel;
+    private bool _dictionaryLoaded = false;
+    private bool _trieLoaded = false;
+    [SerializeField] private int _loadsPerFrame = 10_000;
 
     void Awake()
     {
@@ -26,23 +30,28 @@ public class WordCheckerInput : MonoBehaviour
 
     public IEnumerator LoadDictionary()
     {
+        _loadingText.text = "Loading Dictionary...";
         yield return null;
         _validWords = new Dictionary<string, string>();
         string[] rows = Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         foreach (string row in rows)
         {
             string word = string.Join("", row.TakeWhile(char.IsLetter).Select(char.ToLowerInvariant));
-            string definition = row[word.Length..].Trim();
             if (word.Length < 3) { continue; }
-            _validWords[word] = definition;
+            _validWords[word] = row[word.Length..].Trim();
             Trie.AddWord(word);
-            if (_validWords.Count % 1000 == 0)
+            if (_validWords.Count % _loadsPerFrame == 0)
             {
-                _loadingText.text = $"{Mathf.Round((float)_validWords.Count / (float)rows.Length*100)}%";
+                _percentageText.text = $"{Mathf.Round((float)_validWords.Count / (float)rows.Length*100)}%";
                 yield return null;
             }
         }
+        _percentageText.text = $"100%";
+        yield return null;
+        _dictionaryLoaded = true;
+        _trieLoaded = true;
         _loadingPanel.gameObject.SetActive(false);
+        
     }
 
     public bool IsValid(string value) => value.Length > 2 && _validWords.ContainsKey(value.ToLower());

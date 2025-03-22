@@ -8,8 +8,13 @@ public class Trie
     public readonly string Prefix;
     public bool IsWord { get; private set; }
     private readonly Dictionary<char, Trie> _children = new();
+    public int Count { get; private set; } = 0;
 
-    public void AddWord(string word) => AddWord(word, 0);
+    public void AddWord(string word)
+    {
+        Count++;
+        AddWord(word, 0);
+    }
 
     public Trie(string prefix)
     {
@@ -29,7 +34,7 @@ public class Trie
            child = new Trie(word[0..(ix+1)]);
            _children[word[ix]] = child;
         }
-
+        
         child.AddWord(word, ix+1);
     }
 
