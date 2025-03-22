@@ -3,6 +3,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public float ScrollSpeed = 0.25f;
+    public float MaxZoom = 20;
+    public float MinZoom = 1;
     public float MinWidth = 7;
     private float _aspect;
     public bool CancelDrag = false;
@@ -35,7 +37,7 @@ public class CameraController : MonoBehaviour
         float delta = Input.mouseScrollDelta.y;
         if (Mathf.Abs(delta) > Mathf.Epsilon)
         {
-            Camera.main.orthographicSize -= delta * ScrollSpeed;
+            Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - delta * ScrollSpeed, MinZoom, MaxZoom);
         }
 
         if (!CancelDrag && Input.GetMouseButtonDown(0))
