@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -15,19 +16,33 @@ public class WordCheckerInput : MonoBehaviour
     public TMP_InputField InputField;
     public TextMeshProUGUI DefinitionText;
     public Trie Trie { get; private set; } = new(string.Empty);
+    [SerializeField] private TextMeshProUGUI _loadingText;
+    [SerializeField] private GameObject _loadingPanel;
 
     void Awake()
     {
+        StartCoroutine(LoadDictionary());
+    }
+
+    public IEnumerator LoadDictionary()
+    {
+        yield return null;
         _validWords = new Dictionary<string, string>();
-        foreach (string row in Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+        string[] rows = Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string row in rows)
         {
-            // string[] parts = row.Split
             string word = string.Join("", row.TakeWhile(char.IsLetter).Select(char.ToLowerInvariant));
             string definition = row[word.Length..].Trim();
             if (word.Length < 3) { continue; }
             _validWords[word] = definition;
-            // Trie.AddWord(word);
+            Trie.AddWord(word);
+            if (_validWords.Count % 1000 == 0)
+            {
+                _loadingText.text = $"{Mathf.Round((float)_validWords.Count / (float)rows.Length*100)}%";
+                yield return null;
+            }
         }
+        _loadingPanel.gameObject.SetActive(false);
     }
 
     public bool IsValid(string value) => value.Length > 2 && _validWords.ContainsKey(value.ToLower());
@@ -35,7 +50,7 @@ public class WordCheckerInput : MonoBehaviour
     public void Validate(string value)
     {
         string word = value.Trim().ToLower();
-        
+
         if (value == string.Empty)
         {
             Background.color = Color.white;
