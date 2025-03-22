@@ -26,4 +26,11 @@ public class SlideMenu : MonoBehaviour
         else { Show(); }
     }
 
+    void Start()
+    {
+        #if UNITY_ANDROID
+            transform.position -= new Vector3(0, 30);
+        #endif
+    }
+
 }
