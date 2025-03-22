@@ -21,9 +21,11 @@ public class WordCheckerInput : MonoBehaviour
         _validWords = new Dictionary<string, string>();
         foreach (string row in Dictionary.text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
         {
-            string word = row.Split(new char[0])[0].Trim().ToLower();
+            // string[] parts = row.Split
+            string word = string.Join("", row.TakeWhile(char.IsLetter).Select(char.ToLowerInvariant));
+            string definition = row[word.Length..].Trim();
             if (word.Length < 3) { continue; }
-            _validWords[word] = row;
+            _validWords[word] = definition;
             // Trie.AddWord(word);
         }
     }
@@ -42,7 +44,7 @@ public class WordCheckerInput : MonoBehaviour
         else if (_validWords.TryGetValue(word, out string definition))
         {
             Background.color = Valid;
-            DefinitionText.text = definition;
+            DefinitionText.text = $"{word.ToUpper()}: {definition}";
         }
         else
         {
@@ -51,7 +53,7 @@ public class WordCheckerInput : MonoBehaviour
         }
     }
 
-    public string GetDefinition(string word) => _validWords[word.Trim().ToLower()];
+    public string GetDefinition(string word) => $"{word.ToUpper()}: {_validWords[word.Trim().ToLower()]}";
 
     internal void ShowDefinition(PlacedWord placedWord)
     {
@@ -59,7 +61,7 @@ public class WordCheckerInput : MonoBehaviour
         {
             InputField.text = placedWord.Word.ToLower();
             Background.color = Valid;
-            DefinitionText.text = definition;
+            DefinitionText.text = $"{placedWord.Word}: {definition}";
         }
     }
 }
