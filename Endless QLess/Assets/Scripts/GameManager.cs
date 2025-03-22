@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
         }
         _seedInput.text = _builder.ToString();
         Roll(_seedInput.text);
+        _seedInput.text = string.Join("", Dice.Select(d => d.Face));
         _cameraController.Reset();
         // _possibleWords.Clear();
         // _possibleWords.AddRange(WordChecker.Trie.FindWords(Dice.Select(d => d.Face)).OrderByDescending(s => s.Length));
