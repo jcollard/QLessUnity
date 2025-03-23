@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using System.Collections;
+
 
 
 #if UNITY_WEBGL
@@ -13,6 +15,7 @@ using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private DictionaryData _dictionary;
     [SerializeField] private CameraController _cameraController;
     private readonly Dictionary<Vector2Int, DieController> _boardData = new();
     [SerializeField] private TMP_InputField _seedInput;
@@ -93,11 +96,12 @@ public class GameManager : MonoBehaviour
         }
         _boardData.Remove(@event.From);
         _boardData[@event.To] = @event.Die;
-        ValidateBoard();
+        StartCoroutine(ValidateBoard());
     }
 
-    private void ValidateBoard()
+    private IEnumerator ValidateBoard()
     {
+        yield return _dictionary.WaitUntilLoaded();
         _validLetters.Clear();
         _invalidLetters.Clear();
         HashSet<PlacedWord> previousWords = _placedWords.ToHashSet();
@@ -123,8 +127,7 @@ public class GameManager : MonoBehaviour
         IEnumerable<PlacedWord> newWords = _placedWords.Where(w => !previousWords.Contains(w) && w.IsValid);
         if (newWords.Any())
         {
-            WordChecker.ShowDefinition(newWords.First());
-            _definition.text = WordChecker.GetDefinition(newWords.First().Word);
+            _definition.text = _dictionary[newWords.First().Word];
         }
 
         foreach (DieController die in _boardData.Values)
@@ -154,7 +157,7 @@ public class GameManager : MonoBehaviour
             position += delta;
         }
         string word = _builder.ToString();
-        return new PlacedWord(word, start, delta, dice.ToArray(), WordChecker.IsValid(word));
+        return new PlacedWord(word, start, delta, dice.ToArray(), _dictionary.IsValid(word));
     }
 
     public void Roll()
@@ -203,7 +206,6 @@ public class GameManager : MonoBehaviour
             }
         }
         _boardData.Clear();
-        ValidateBoard();
         _definition.text = string.Empty;
         SetSeed();
     }

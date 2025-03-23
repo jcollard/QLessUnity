@@ -9,3 +9,7 @@ public sealed record class DictionaryLoadComplete : DictionaryDataEvent
 {
     public static readonly DictionaryLoadComplete Instance = new();
 }
+public sealed record class DictionaryStillLoading : DictionaryDataEvent
+{
+    public static readonly DictionaryStillLoading Instance = new();
+}

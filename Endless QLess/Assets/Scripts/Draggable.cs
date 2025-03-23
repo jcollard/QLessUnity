@@ -15,15 +15,11 @@ public class Draggable : MonoBehaviour
         OnDragStarted.Invoke();
     }
 
-    void OnMouseDrag()
-    {
-        transform.position = MousePosition + Offset;
-    }
+    void OnMouseDrag() => transform.position = MousePosition + Offset;
 
     public void Snap()
     {
         Vector3 position = transform.position;
-
         position.x = Mathf.Round(position.x);
         position.y = Mathf.Round(position.y);
         transform.position = position;
