@@ -219,18 +219,4 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private TMP_InputField _trieLetters;
-
-    public void FindLetters(string input)
-    {
-        input = input.Trim().ToLower();
-        var nextWords = WordChecker.Trie.NextWords(input);
-        if (!nextWords.Any())
-        {
-            Debug.Log("No words");
-        }
-        else
-        {
-            Debug.Log(string.Join(", ", nextWords));
-        }
-    }
 }
